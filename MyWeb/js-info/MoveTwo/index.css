@@ -1,0 +1,139 @@
+.wp{
+    width: 100%;
+}
+/*手风琴*/
+.accordion{
+    width: 100%;
+    background: #ff8ea2;
+    padding:20px 0;
+}
+.pagetitle{
+    width: 900px;
+    height: 60px;
+    margin:0 auto 20px;
+    line-height:60px;
+    padding-left:10px;
+    font-size:2.8rem;
+    font-weight:900;
+    font-family: Lato, "Microsoft YaHei", sans-serif;
+    color:#666;
+    text-shadow:2px 2px #EFEFEF,4px 4px #AEE2D9;
+    border-bottom-style:double;
+    border-bottom-color:#22C3AA;
+    box-sizing:border-box;
+}
+.dota{
+    position:relative;
+    height: 500px;
+    overflow:hidden;
+    margin:0 auto;
+    border-radius:10px;
+    box-shadow: -2px 0 10px #000
+}
+.dota li{
+    position:absolute;
+    top:0;
+    left:0;
+    width: 700px;
+    height: 500px;
+    box-shadow: -2px 0 10px #000
+}
+.dota img{
+    width: 700px;
+    height: 500px;
+}
+/*选项卡*/
+.control{
+    width: 100%;
+    background: #9cfaff;
+    padding:100px 0;
+}
+.play { width: 470px; height: 150px; overflow: hidden; border: 1px solid #d8d8d8; margin: 100px auto; }
+.packet { width:470px; height: 150px; position: relative; }
+.packet ol { position: absolute; right: 5px; bottom: 5px; z-index: 2; }
+.packet ol li { float: left; margin-right: 3px; display: inline; cursor: pointer; background: #fcf2cf; border: 1px solid #f47500; padding: 2px 6px; color: #d94b01; font-family: arial; font-size: 12px; }
+.packet .active { padding: 3px 8px; font-weight: bold; color: #ffffff; background: #ffb442; position: relative; bottom: 2px; }
+
+.packet ul { position: relative; top: 0; left: 0; z-index: 1; background:white; width: 470px; height: 150px; }
+.packet ul li { position:absolute; width: 470px; height: 150px; top:0px; left:0px; opacity:0; filter:alpha(opacity:0); }
+.packet ul img { float: left; width: 470px; height: 150px; }
+/*多图片中心放大*/
+.moreimg{
+    width: 100%;
+    padding:50px 0;
+    background: #accc8a;
+}
+.mmimg{
+    width: 666px;
+    height: 700px;
+    margin: 100px auto;
+}
+.mmimg li{
+    width: 200px;
+    height: 200px;
+    float: left;
+    margin: 10px;
+    border: 1px solid #000;
+}
+.mmimg li img{
+    width: 100%;
+}
+/*多块运动*/
+.moremove{
+    width: 100%;
+    padding-bottom:50px;
+    background: #8c65ff;
+}
+.movewp{
+    position:relative;
+    width: 900px;
+    margin:0 auto;
+
+}
+#btn1{
+    position:absolute;
+    top:80px;
+    left:50%;
+    width: 100px;
+    height: 40px;
+    line-height:40px;
+    margin-left:-50px;
+    font-size:22px;
+    font-family: Lato, "Microsoft YaHei", sans-serif;
+}
+.starimg{
+    position: relative;
+    width: 700px;
+    height: 400px;
+    background: url(img/star0.jpg) no-repeat center;
+    margin: 100px auto;
+    border-radius:15px;
+    box-shadow:0 0 5px 5px #fff;
+    overflow:hidden;
+}
+.starimg span{
+    background: url(img/star1.jpg);
+    position: absolute;
+    opacity: 0;
+}
+/*底部*/
+.footer{
+    width: 100%;
+    height: 60px;
+    background: #040403;
+}
+.footer a{
+    display:block;
+    width: 200px;
+    height: 60px;
+    margin:0 auto;
+    line-height:60px;
+    text-align:center;
+    font-size:2rem;
+    font-weight:900;
+    font-family: Lato, "Microsoft YaHei", sans-serif;
+    color:#fff;
+}
+.footer a:hover{
+    color: #27ff25;
+}

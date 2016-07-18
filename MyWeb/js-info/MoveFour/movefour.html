@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="base.css"/>
+    <link rel="stylesheet" href="index.css"/>
+    <script src="../../js/move.js"></script>
+    <script src="../../js/common.js"></script>
+    <script>
+        domReady(function(){
+            //左右拖拽
+            ;(function(){
+                var oMove = document.getElementById('movewp');
+                var oPic = document.getElementById('picture');
+                var aLi = oPic.children;
+                var aImg = oMove.getElementsByTagName('img');
+                oPic.style.width = aLi[0].offsetWidth*aLi.length+'px';
+                var oMoveC = oMove.offsetWidth/2;
+                // 拖拽
+                oPic.onmousedown=function(ev){
+                    var oEvent=ev || event;
+                    var disX=oEvent.clientX-oPic.offsetLeft;
+
+                    document.onmousemove=function(ev){
+                        var oEvent=ev || event;
+                        var l=oEvent.clientX-disX;
+                        // 限制范围
+                        if(l>=oMoveC-(1-0.5)*aLi[0].offsetWidth){
+                            l=oMoveC-(1-0.5)*aLi[0].offsetWidth;
+                        }
+                        if(l<=oMoveC-(aLi.length-0.5)*aLi[0].offsetWidth){
+                            l=oMoveC-(aLi.length-0.5)*aLi[0].offsetWidth;
+                        }
+                        oPic.style.left=l+'px';
+                        // 改变大小
+                        setSize();
+                    };
+                    document.onmouseup=function(){
+                        document.onmousemove=null;
+                        document.onmouseup=null;
+                    };
+                    return false;
+                };
+                //初始化ul的left
+                oPic.style.left = -120+'px';
+                function setSize(){
+                    for(var i=0; i<aLi.length; i++){
+                        // 图片距离中心点的距离
+                        var c=Math.abs(oMoveC-(aLi[i].offsetLeft+aLi[i].offsetWidth/2+oPic.offsetLeft));
+                        // 比例
+                        var scale=1-c/500;
+                        scale<0.5 && (scale=0.5);
+                        // 改变大小
+                        aImg[i].style.width=scale*520+'px';
+                        // 让一个物体从中心变大
+                        aImg[i].style.marginLeft=-(scale*520-260)/2+'px';
+                        aImg[i].style.marginTop=-(scale*358-179)/2+'px';
+                        aLi[i].style.zIndex=scale*1000;
+                    }
+                }
+                setSize();
+            })();
+            //圆周运动
+            ;(function(){
+                var oBox = document.getElementById('circle');
+                //创建span
+                var N = 6;
+                var zIndex=999;
+                for(var i = 0;i<N;i++){
+                    var oSpan = document.createElement('span');
+                    oSpan.innerHTML = '<img src="img/c'+(i+1)+'.jpg"/>';
+                    oBox.appendChild(oSpan);
+                }
+
+                var aSpan = oBox.getElementsByTagName('span');
+                var bFlag = true;
+                oBox.onclick = function(){
+                    if(bFlag){
+                        for(var i = 0;i<aSpan.length;i++){
+                            var d = 360/N*i; //每个span的终点度数
+                            cirMove(aSpan[i],d);
+                            (function(index){
+                                aSpan[i].onmouseenter=function(){
+                                    this.style.zIndex =zIndex++;
+                                    move(aSpan[index],{width:200,height:200,marginLeft:-100,marginTop:-100});
+                                };
+                                aSpan[i].onmouseleave = function(){
+                                    move(aSpan[index],{width:100,height:100,marginLeft:-50,marginTop:-50})
+                                }
+                            })(i);
+                        }
+                    }else{
+                        for(var i = 0;i<aSpan.length;i++){
+                            cirMove(aSpan[i],0)
+                        }
+                    }
+                    bFlag = !bFlag;
+                };
+                //圆运动
+                var R = oBox.offsetWidth/2;
+                function cirMove(obj,iTarget){
+                    obj.a = obj.a || 0;
+                    var start = obj.a;
+                    var dis = iTarget-start;
+                    var count = Math.floor(1000/30);
+                    var n = 0;
+                    clearInterval(obj.time);
+                    obj.time=setInterval(function(){
+                        n++;
+                        var a = n/count;
+                        var cur = start+dis*a;
+                        obj.a = cur;
+                        var x = R+R*Math.sin(cur*Math.PI/180);
+                        var y = R-R*Math.cos(cur*Math.PI/180);
+                        obj.style.left = x+'px';
+                        obj.style.top = y+'px';
+                        if(n==count){
+                            clearInterval(obj.time);
+                        }
+                    },30)
+                }
+            })();
+            //模拟iPhone
+            ;(function(){
+                var oUl=document.getElementById('ul1');
+                var aLi=oUl.children;
+
+                var width=aLi[0].offsetWidth;
+
+                var iNow=0;
+                oUl.onmousedown=function(ev){
+                    clearInterval(oUl.timer);
+                    var oEvent=ev || event;
+                    var disX=oEvent.clientX-oUl.offsetLeft;
+                    var downX=oEvent.clientX;
+
+                    document.onmousemove=function(ev){
+                        var oEvent=ev || event;
+
+                        oUl.style.left=oEvent.clientX-disX+'px';
+                    };
+                    document.onmouseup=function(ev){
+                        var oEvent=ev || event;
+                        document.onmousemove=null;
+                        document.onmouseup=null;
+
+                        var upX=oEvent.clientX;
+                        if(Math.abs(upX-downX)>100){
+                            if(upX>downX){
+                                iNow--;
+                                iNow<0 && (iNow=0);
+                                move(oUl, {left: -width*iNow});
+                            }else{
+                                iNow++;
+                                iNow>aLi.length-1 && (iNow=aLi.length-1);
+                                move(oUl, {left: -width*iNow});
+                            }
+                        }else{
+                            move(oUl, {left: -width*iNow});
+                        }
+                    };
+                    return false;
+                };
+            })();
+            //吞吐运动
+            var oBtn = document.getElementById('btn1');
+            var oTun = document.getElementById('tun');
+            var aLi = oTun.children;
+            //布局转换
+            var aPos=[];
+            for(var i=0; i<aLi.length; i++){
+                aPos[i]={
+                    left: aLi[i].offsetLeft,
+                    top: aLi[i].offsetTop
+                };
+            }
+            for(var i=0; i<aLi.length; i++){
+                aLi[i].style.position='absolute';
+                aLi[i].style.left=aPos[i].left+'px';
+                aLi[i].style.top=aPos[i].top+'px';
+                aLi[i].style.margin=0;
+            }
+            var timer;
+            var bFlag=false;
+            oBtn.onclick=function(){
+                if(bFlag)return;
+                bFlag=true;
+                var iNow=0;
+                timer=setInterval(function(){
+                    (function(index){
+                        move(aLi[iNow], {left: 400, top: 100, width: 0, height: 0, opacity: 0},{complete: function(){
+                            if(index==aLi.length-1){
+                                iNow=index;
+                                timer=setInterval(function(){
+                                    move(aLi[iNow], {left: aPos[iNow].left, top: aPos[iNow].top, width: 200, height: 200, opacity: 1});
+                                    iNow--;
+
+                                    // 关闭定时器
+                                    if(iNow==-1){
+                                        clearInterval(timer);
+                                        setTimeout(function(){
+                                            bFlag=false;
+                                        }, 500);
+                                    }
+                                }, 100);
+                            }
+                        }});
+                    })(iNow);
+                    iNow++;
+                    // 关闭定时器
+                    if(iNow==aLi.length){
+                        clearInterval(timer);
+                    }
+                }, 100);
+
+            };
+        });
+    </script>
+</head>
+<body>
+<div class="wp">
+    <div class="eq_one">
+        <div class="move1">
+            <h2 class="pagetitle">左右拖动切换</h2>
+            <div class="movewp" id="movewp">
+                <ul class="picture" id="picture">
+                    <li><img src="img/1.jpg"></li>
+                    <li><img src="img/2.jpg"></li>
+                    <li><img src="img/3.jpg"></li>
+                    <li><img src="img/4.jpg"></li>
+                    <li><img src="img/5.jpg"></li>
+                    <li><img src="img/6.jpg"></li>
+                    <li><img src="img/7.jpg"></li>
+                    <li><img src="img/8.jpg"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="eq_two">
+        <div class="move2">
+            <h2 class="pagetitle">圆周运动</h2>
+            <div class="circle" id="circle">
+                <img src="img/v.jpg"/>
+                <!--<span>-->
+                <!--<img src="img/c1.jpg"/>-->
+                <!--</span>-->
+            </div>
+        </div>
+    </div>
+    <div class="eq_three">
+        <div class="move3">
+            <h2 class="pagetitle">模拟iPhone</h2>
+            <div class="iphone" id="iphone">
+                <div class="wrap" id="wrap">
+                    <ul id="ul1">
+                        <li style="background:url(img/pic1.jpg);" title="智能课堂"></li>
+                        <li style="background:url(img/pic2.jpg);" title="智能课堂"></li>
+                        <li style="background:url(img/pic3.jpg);" title="智能课堂"></li>
+                        <li style="background:url(img/pic4.jpg);" title="智能课堂"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="eq_four">
+        <div class="move4">
+            <h2 class="pagetitle">吞吐运动</h2>
+            <input type="button" value="吞吐" id="btn1">
+            <ul class="tun" id="tun">
+                <li><img src="img/m1.jpg"></li>
+                <li><img src="img/m2.jpg"></li>
+                <li><img src="img/m3.jpg"></li>
+                <li><img src="img/m4.jpg"></li>
+                <li><img src="img/m5.jpg"></li>
+                <li><img src="img/m6.jpg"></li>
+                <li><img src="img/m7.jpg"></li>
+                <li><img src="img/m8.jpg"></li>
+                <li><img src="img/m9.jpg"></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer">
+        <a href="../../index.html">回到主页</a>
+    </div>
+</div>
+</body>
+</html>

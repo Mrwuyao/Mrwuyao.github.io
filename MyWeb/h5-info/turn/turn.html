@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body{
+            background:#000;
+        }
+        #btn{
+            position:absolute;
+            top:80px;
+            left:50%;
+            width: 80px;
+            height: 40px;
+            margin-left:-40px;
+            line-height:40px;
+            text-align:center;
+            font-size:26px;
+            border:0 none;
+            border-radius:5px;
+            cursor:pointer;
+        }
+        #box{
+            position:relative;
+            width: 700px;
+            height: 400px;
+            margin:180px auto;
+            border-radius:10px;
+            box-shadow:0 0 5px 5px #fff;
+            overflow:hidden;
+        }
+        #box span{
+            position:absolute;
+            transform-style: preserve-3d;
+        }
+        #box span .front{
+            width: 100%;
+            height: 100%;
+            position:absolute;
+            left:0;
+            top:0;
+            background:url(img/0.jpg);
+            backface-visibility:hidden;
+            z-index:2;
+        }
+        #box span .back{
+            width: 100%;
+            height: 100%;
+            position:absolute;
+            left:0;
+            top:0;
+            background:url(img/1.jpg);
+            transform:scale(-1,1);
+            z-index:1;
+        }
+    </style>
+    <script>
+        window.onload = function(){
+            var oBox = document.querySelector('#box');
+            var oBtn = document.querySelector('#btn');
+            var R=4;
+            var C=7;
+            for(var r=0; r<R; r++){
+                for(var c=0; c<C; c++){
+                    var oSpan=document.createElement('span');
+                    oSpan.style.width=oBox.offsetWidth/C+'px';
+                    oSpan.style.height=oBox.offsetHeight/R+'px';
+                    oBox.appendChild(oSpan);
+                    oSpan.style.left=oSpan.offsetWidth*c+'px';
+                    oSpan.style.top=oSpan.offsetHeight*r+'px';
+                    oSpan.innerHTML='<em class="front"></em><em class="back"></em>'
+                    oSpan.children[0].style.backgroundPosition='-'+oSpan.offsetWidth*c+'px -'+oSpan.offsetHeight*r+'px';
+                    oSpan.children[1].style.backgroundPosition='-'+oSpan.offsetWidth*c+'px -'+oSpan.offsetHeight*r+'px';
+
+                    oSpan.r=r;
+                    oSpan.c=c;
+                }
+            }
+
+            var aSpan = oBox.children;
+            var iNow = 0;
+            var bFlag = false;
+            oBtn.onclick = function(){
+                if(bFlag)return;
+                bFlag = true;
+                iNow++;
+                for(var i = 0;i<aSpan.length;i++){
+                    aSpan[i].style.transition = '1s all ease '+(aSpan[i].r+aSpan[i].c)*200+'ms';
+                    aSpan[i].style.transform = 'perspective(800px) rotateY(-180deg)';
+                }
+                aSpan[aSpan.length-1].addEventListener('transitionend',function(){
+                    for(var i=0; i<aSpan.length; i++){
+                        aSpan[i].style.transition = 'none';
+                        aSpan[i].style.transform='perspective(800px) rotateY(0deg)';
+                        //换图
+                        aSpan[i].children[0].style.backgroundImage='url(img/'+iNow%4+'.jpg)';
+                        aSpan[i].children[1].style.backgroundImage='url(img/'+(iNow+1)%4+'.jpg)';
+                    }
+                    bFlag = false;
+                },false)
+            }
+        }
+    </script>
+</head>
+<body>
+<input type="button" value="翻转" id="btn"/>
+<div id="box">
+    <!--<span>-->
+        <!--<em class="front"></em>-->
+        <!--<em class="back"></em>-->
+    <!--</span>-->
+</div>
+</body>
+</html>

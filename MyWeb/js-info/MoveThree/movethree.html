@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="base.css"/>
+    <link rel="stylesheet" href="index.css"/>
+    <script src="../../js/move.js"></script>
+    <script src="../../js/common.js"></script>
+    <script>
+        domReady(function(){
+            //分布运动
+            ;(function(){
+                var oMove1 = document.getElementById('move1');
+                var str = '得意，失意，切莫在意；顺境，逆境，切莫止境。人生之路，上坡路与下坡路总会与你不期而遇，上坡需要冷静和沉稳，下坡需要自信和勇气。走好人生的上坡路与下坡路，既是一种觉悟，更是一种智慧。属于自己的不要放弃；已经失去的留作回忆；想要得到的一定要努力；累了把心靠岸；选择了就不要后悔；苦了才懂得满足；痛了才享受生活；伤了才明白坚强；总有起风的清晨；总有绚烂的黄昏；总有流星的夜晚。人生就像一张有去无回的单程车票，没有彩排，每一场都是现场直播。真着急，假生气；热问题，冷处理；不找事，不怕事；干累活，会歇息；办事情，分缓急；过去事，不后悔；眼前事，莫攀比；得到的，会失去；失去的，由它去；得志时，不忘形；失意时，不伤悲；常宽己，好心情；多迷糊，长乐呵；尽全力，平常心！人生需要勇气，哪怕海啸扑面，也应面不改色；人生需要豪气，哪怕泰山压顶，也应挺腰不弯；人生需要正气，哪怕强权压身，也应立志不改。勇气、豪气和正气，“三气”盼你多多“吸”，愿你人生有喜气！';
+                for(var i = 0;i<str.length;i++){
+                    var oSpan = document.createElement('span');
+                    oSpan.innerHTML = str.charAt(i);
+                    oMove1.appendChild(oSpan);
+                }
+                var aSpan = oMove1.getElementsByTagName('span');
+                var iNow = 0;
+                var timer = setInterval(function(){
+                    move(aSpan[iNow],{opacity:1});
+                    iNow++;
+                    if(iNow==aSpan.length){
+                        clearInterval(timer);
+                    }
+                },100)
+            })();
+            //无缝滚动
+            ;(function(){
+                var oBtn1 = document.getElementById('btn1');
+                var oBtn2 = document.getElementById('btn2');
+                var oStar = document.getElementById('star');
+                var aLi = oStar.children;
+                oStar.innerHTML+=oStar.innerHTML;
+                oStar.style.width = aLi[0].offsetWidth*aLi.length+'px';
+                var left = 0;
+                var timer;
+                function toLeft(){
+                    clearInterval(timer);
+                    timer = setInterval(function(){
+                        left-=2;
+                        if(left<=-oStar.offsetWidth/2){
+                            left = 0;
+                        }
+                        oStar.style.left = left+'px';
+                    },30)
+                }
+                toLeft();
+                function toRight(){
+                    clearInterval(timer);
+                    timer = setInterval(function(){
+                        left+=2;
+                        if(left>=0){
+                            left = -oStar.offsetWidth/2;
+                        }
+                        oStar.style.left = left+'px';
+                    },30)
+                }
+                toRight();
+                oBtn1.onclick=function(){
+                    toLeft();
+                };
+                oBtn2.onclick=function(){
+                    toRight();
+                };
+            })();
+            //照片墙
+            var oBtn = document.getElementById('change');
+            var oImgbox = document.getElementById('imgbox');
+            var aLi = oImgbox.children;
+            //随机换位置
+            oBtn.onclick=function(){
+                aPos.sort(function(){
+                    return Math.random()-0.5;
+                });
+                for(var i=0; i<aLi.length; i++){
+                    move(aLi[i], aPos[aLi[i].index]);
+                }
+            };
+            //布局转换
+            var aPos=[];
+            var zIndex=999;
+            for(var i=0; i<aLi.length; i++){
+                aPos[i]={
+                    left: aLi[i].offsetLeft,
+                    top: aLi[i].offsetTop
+                };
+            }
+            for(var i=0; i<aLi.length; i++){
+                aLi[i].style.position='absolute';
+                aLi[i].style.left=aPos[i].left+'px';
+                aLi[i].style.top=aPos[i].top+'px';
+                aLi[i].style.margin=0;
+            }
+            //每个都能拖拽
+            for(var i=0; i<aLi.length; i++){
+                drag(aLi[i]);
+                aLi[i].index=i;
+            }
+            function drag(obj){
+                obj.onmousedown=function(ev){
+                    obj.style.zIndex=zIndex++;
+                    clearInterval(obj.timer);
+                    var oEvent=ev || event;
+                    var disX=oEvent.clientX-obj.offsetLeft;
+                    var disY=oEvent.clientY-obj.offsetTop;
+
+                    document.onmousemove=function(ev){
+                        var oEvent=ev || event;
+                        obj.style.left=oEvent.clientX-disX+'px';
+                        obj.style.top=oEvent.clientY-disY+'px';
+
+                        for(var i=0; i<aLi.length; i++){
+                            aLi[i].className='';
+                        }
+                        var oNear=findNearest(obj);
+                        if(oNear){
+                            oNear.className='active';
+                        }
+                    };
+                    document.onmouseup=function(){
+                        document.onmousemove=null;
+                        document.onmouseup=null;
+
+                        var oNear=findNearest(obj);
+                        if(oNear){
+                            move(oNear, aPos[obj.index]);
+                            move(obj, aPos[oNear.index]);
+
+                            oNear.className='';
+
+                            var tmp;
+                            tmp=oNear.index;
+                            oNear.index=obj.index;
+                            obj.index=tmp;
+                        }else{
+                            move(obj, aPos[obj.index]);
+                        }
+                    };
+                    return false;
+                };
+            }
+            function collTest(obj, obj2){
+                var l1=obj.offsetLeft;
+                var r1=obj.offsetWidth+l1;
+                var t1=obj.offsetTop;
+                var b1=obj.offsetHeight+t1;
+
+                var l2=obj2.offsetLeft;
+                var r2=obj2.offsetWidth+l2;
+                var t2=obj2.offsetTop;
+                var b2=obj2.offsetHeight+t2;
+
+                if(r1<l2 || b1<t2 || l1>r2 || t1>b2){
+                    return false;
+                }else{
+                    return true;
+                }
+            }
+            function getDis(obj, obj2){
+                var l1=obj.offsetLeft+obj.offsetWidth/2;
+                var t1=obj.offsetTop+obj.offsetHeight/2;
+
+                var l2=obj2.offsetLeft+obj2.offsetWidth/2;
+                var t2=obj2.offsetTop+obj2.offsetHeight/2;
+
+                var a=l1-l2;
+                var b=t1-t2;
+                return Math.sqrt(a*a+b*b);
+            }
+            function findNearest(obj){
+                var iMin=99999999;
+                var iMinIndex=-1;
+
+                for(var i=0; i<aLi.length; i++){
+                    if(obj==aLi[i])continue;
+                    if(collTest(obj, aLi[i])){
+                        var dis=getDis(obj, aLi[i]);
+                        if(dis<iMin){
+                            iMin=dis;
+                            iMinIndex=i;
+                        }
+                    }
+                }
+                if(iMinIndex==-1){
+                    return null;
+                }else{
+                    return aLi[iMinIndex];
+                }
+            }
+        });
+    </script>
+</head>
+<body>
+<div class="wp">
+    <div class="eq_one">
+        <div class="move1" id="move1">
+            <h2 class="pagetitle">分布运动</h2>
+        </div>
+    </div>
+    <div class="eq_two">
+        <h2 class="pagetitle">无缝滚动</h2>
+        <div class="move2">
+            <input type="button" value="向左" id="btn1">
+            <input type="button" value="向右" id="btn2">
+            <div class="contains">
+                <ul class="star" id="star">
+                    <li><img src="img/1.jpg"></li>
+                    <li><img src="img/2.jpg"></li>
+                    <li><img src="img/3.jpg"></li>
+                    <li><img src="img/4.jpg"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="eq_three">
+        <h2 class="pagetitle">照片墙</h2>
+        <div class="move3">
+            <input type="button" value="隨機換位置" id="change">
+            <ul class="imgbox" id="imgbox">
+                <li><img src="img/s1.jpg"></li>
+                <li><img src="img/s2.jpg"></li>
+                <li><img src="img/s3.jpg"></li>
+                <li><img src="img/s4.jpg"></li>
+                <li><img src="img/s5.jpg"></li>
+                <li><img src="img/s6.jpg"></li>
+                <li><img src="img/s7.jpg"></li>
+                <li><img src="img/s8.jpg"></li>
+                <li><img src="img/s9.jpg"></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer">
+        <a href="../../index.html">回到主页</a>
+    </div>
+</div>
+</body>
+</html>

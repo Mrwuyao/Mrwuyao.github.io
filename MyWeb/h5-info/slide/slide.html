@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            list-style:none;
+        }
+        body{
+            background:#000;
+        }
+        #btn1,#btn2{
+            position:absolute;
+            top:80px;
+            width: 80px;
+            height: 30px;
+            font-size:24px;
+            line-height:24px;
+            text-align:center;
+            border:0 none;
+            border-radius:5px;
+            cursor:pointer;
+        }
+        #btn1{
+            left:40%;
+        }
+        #btn2{
+            left:55%;
+        }
+        #ul1{
+            width: 360px;
+            height: 200px;
+            margin:180px auto;
+            position:relative;
+            perspective:800px;
+        }
+        #ul1 li{
+            width: 360px;
+            height: 200px;
+            background:#4aebff;
+            position:absolute;
+            top:0;
+            left:0;
+            opacity:0;
+            transition:1s all ease;
+            border-radius:8px;
+            box-shadow:0 0 8px 5px #fff;
+            overflow:hidden;
+            -webkit-box-reflect:below 12px -webkit-linear-gradient(rgba(0,0,0,0) 40%,rgba(0,0,0,.4));
+        }
+        #ul1 li img{
+            width: 100%;
+            height: 100%;
+        }
+        #ul1 li.cur{
+            opacity:1;
+            z-index:3;
+        }
+        #ul1 li.l1{
+            transform:translateX(-200px) rotateY(60deg);
+            opacity:.6;
+            z-index:2;
+        }
+        #ul1 li.r1{
+            transform:translateX(200px) rotateY(-60deg);
+            opacity:.6;
+            z-index:2;
+        }
+        #ul1 li.l2{
+            transform:translateX(-200px) rotateY(80deg);
+            z-index:1;
+        }
+        #ul1 li.r2{
+            transform:translateX(200px) rotateY(-80deg);
+            z-index:1;
+        }
+    </style>
+    <script>
+        window.onload = function(){
+            var oBtn1 = document.querySelector('#btn1');
+            var oBtn2 = document.querySelector('#btn2');
+            var aLi = document.querySelectorAll('#ul1 li');
+            var arr = [];
+            var bFlag = false;
+            for(var i = 0; i<aLi.length;i++){
+                arr[i] = aLi[i].className;
+
+            }
+            //左
+            oBtn1.onclick = function(){
+                if(bFlag) return;
+                bFlag = true;
+                arr.unshift(arr.pop());
+                for(var i = 0; i<aLi.length;i++){
+                    aLi[i].className = arr[i];
+                }
+                setTimeout(function(){
+                    bFlag = false;
+                },1000)
+            };
+            //右
+            oBtn2.onclick = function(){
+                arr.push(arr.shift());
+                for(var i = 0; i<aLi.length;i++){
+                    aLi[i].className = arr[i];
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+<input type="button" value="←" id="btn1"/>
+<input type="button" value="→" id="btn2"/>
+<ul id="ul1">
+    <li class="l2"><img src="img3/1m.jpg" alt=""/></li>
+    <li class="l1"><img src="img3/2m.jpg" alt=""/></li>
+    <li class="cur"><img src="img3/3m.jpg" alt=""/></li>
+    <li class="r1"><img src="img3/4m.jpg" alt=""/></li>
+    <li class="r2"><img src="img3/5m.jpg" alt=""/></li>
+    <li><img src="img3/6m.jpg" alt=""/></li>
+    <li><img src="img3/7m.jpg" alt=""/></li>
+</ul>
+</body>
+</html>

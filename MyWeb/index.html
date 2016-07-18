@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"/>
+    <link rel="stylesheet" href="css/index.css"/>
+    <link rel="stylesheet" href="css/iconstyle/iconfont.css"/>
+    <script src="js/common.js"></script>
+    <script src="js/move.js"></script>
+    <script>
+        function rnd(n,m){
+            return parseInt(Math.random()*(m-n)+n);
+        }
+        function tuDou(n){
+            return n<10?'0'+n:''+n;
+        }
+        domReady(function(){
+            //鼠标点击特效
+            ;(function(){
+                document.onmouseup = function(ev){
+                    var oEvent = ev || event;
+                    var oDiv = document.createElement('div');
+                    var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                    oDiv.style.width = 5+'px';
+                    oDiv.style.height = 5+'px';
+                    oDiv.style.opacity = 1;
+                    oDiv.style.borderRadius = '50%';
+                    oDiv.style.background = 'radial-gradient(#fff,#0ebfdd)';
+                    oDiv.style.position = 'absolute';
+                    oDiv.style.left = oEvent.clientX+'px';
+                    oDiv.style.top = oEvent.clientY+scrollTop+'px';
+                    var l = oEvent.clientX-15;
+                    var t = oEvent.clientY+scrollTop-15;
+                    document.body.appendChild(oDiv);
+                    move(oDiv,{width:30,height:30,left:l,top:t,opacity:0.4},{duration:300,complete:function(){
+                        document.body.removeChild(oDiv);
+                    },easing:'linear'})
+                }
+            })();
+            ;(function(){
+                var oWp = document.getElementById('wp');
+                var oEnter_wp = document.getElementById('enter_wp');
+                var oEnterUl = oEnter_wp.children[0];
+                var aEnterLi = oEnterUl.children;
+                for(var i=0; i<aEnterLi.length; i++){
+                    aEnterLi[i].style.left = i*100 + 'px';
+                    aEnterLi[i].style.backgroundPosition = -(74 + i*100)+ 'px 0px' ;
+                }
+
+                //文字键入
+                var oEnter = document.getElementById('enter_txt');
+                var str = 'Enter HomePage';
+                for(var i = 0;i<str.length;i++){
+                    var oSpan = document.createElement('span');
+                    oSpan.innerHTML = str.charAt(i);
+                    oEnter.appendChild(oSpan);
+                }
+                var aSpan = oEnter.children;
+                var n = 0;
+                var timer = setInterval(function(){
+                    move(aSpan[n],{opacity:1});
+                    n++;
+                    if(n == aSpan.length){
+                        clearInterval(timer);
+                    }
+                },200);
+
+
+                oEnter_wp.onclick = function(){
+                    oEnter.style.display = 'none';
+                    for(var i=0; i<aEnterLi.length; i++){
+                        ;(function(i){
+                           setTimeout(two,i*100);
+                            function two(){
+                                aEnterLi[i].style.transition = 'all 1s';
+                                aEnterLi[i].style.transform = 'translateZ(400px)';
+                                aEnterLi[i].style.opacity = '0';
+                            }
+                        })(i);
+                    }
+
+                    setTimeout(function(){
+
+                        oWp.style.display = 'block';
+                        oEnter_wp.style.display = 'none';
+                        oEnter.style.display = 'none';
+                    },1300)
+                }
+            })();
+
+            //右上图片放大
+            ;(function(){
+                var oImg = document.getElementById('title_right');
+                oImg.onmouseover = function(){
+                    move(oImg,{width:140,height:140,marginRight:0,marginTop:10});
+                };
+                oImg.onmouseout = function(){
+                    move(oImg,{width:80,height:80,marginRight:30,marginTop:40});
+                };
+            })();
+            //数码时钟
+            ;(function(){
+                var aYearImg = document.getElementById('year').getElementsByTagName('img');
+                var aTimeImg = document.getElementById('time').getElementsByTagName('img');
+
+                function clock(){
+                    // 定义一个时间对象
+                    var oDate = new Date();
+                    var Y = oDate.getFullYear();
+                    var M = oDate.getMonth() + 1;
+                    var D = oDate.getDate();
+                    var h = oDate.getHours();
+                    var m = oDate.getMinutes();
+                    var s = oDate.getSeconds();
+                    var week = oDate.getDay();
+                    var weekArr = ['seven','one','two','three','four','five','six'];
+                    // 年月日
+                    var str1 = Y + '-' + tuDou(M) + '-' + tuDou(D) + '-';
+                    // 时分秒星期
+                    var str2 = tuDou(h) + ':' + tuDou(m) + ':' + tuDou(s) + ':' + week;
+                    // 用年月日的字符串替换图片
+                    for(var i = 0; i < aYearImg.length; i++){
+                        if(str1.charAt(i) == '-'){
+                            continue;
+                        }
+                        aYearImg[i].src = 'img2/'+str1.charAt(i)+'.png';
+                    }
+                    // 用时分秒字符串替换图片
+                    //14:32:03:5:3
+                    for(var i = 0; i < aTimeImg.length; i++){
+                        // 当字符串的第i个等于冒号了，就让第i次跳出循环
+                        if(str2.charAt(i) == ':'){
+                            continue;
+                        }
+                        aTimeImg[i].src = 'img2/'+str2.charAt(i)+'.png';
+                        // 判断最后一个图片 - 因为它是星期的图片了
+                        if(i == aTimeImg.length - 1){
+                            aTimeImg[i].src = 'img2/'+weekArr[week]+'.png';
+                        }
+                    }
+                }
+                clock();
+                setInterval(clock,1000);
+            })();
+            //导航条Hover效果
+            ;(function(){
+                var oUl = document.getElementById('banner_list');
+                var oCon = document.getElementById('contains');
+                var aLi = oUl.children;
+                var aDiv = oCon.children;
+                var timer= null;
+
+                var aI = oUl.getElementsByTagName('i');
+                for(var i = 0;i<aLi.length;i++){
+                    aLi[i].index=i;
+                    aLi[i].onclick = function(){
+                        if(this.index == 0){
+                            clearInterval(timer);
+                            timer = setInterval(show,2000);
+                        }else{
+                            clearInterval(timer);
+                        }
+                        for(var j=0;j<aLi.length;j++){
+                            aI[j].className='';
+                            aDiv[j].className='contains_con';
+                        }
+                        aI[this.index].className = 'active';
+                        aDiv[this.index].className = 'contains_con active';
+                    }
+                }
+                //首页
+                    var n = 0;
+                    clearInterval(timer);
+                    timer = setInterval(show,2000);
+                    function show(){
+                        n++;
+                        aDiv[0].style.backgroundImage = 'url(img/pic'+n%6+'.jpg)';
+                        aDiv[0].children[0].style.color = 'rgb('+rnd(0,256)+','+rnd(0,256)+','+rnd(0,256)+')';
+                    }
+                    oCon.onmouseover = function(){
+                        clearInterval(timer);
+                    };
+                    oCon.onmouseout = function(){
+                        timer = setInterval(show,2000);
+                    }
+            })();
+            //css作品
+           ;(function(){
+                var oCssinfo = document.getElementById('css_info');
+                var aLi = oCssinfo.children;
+                var aSpan = oCssinfo.getElementsByTagName('span');
+                for(var i = 0;i<aLi.length;i++){
+                    aLi[i].index = i;
+                    aLi[i].onmouseover = function(){
+                        for(var i=0;i<aLi.length;i++){
+                            move(aSpan[i],{height:0});
+                        }
+                        move(aSpan[this.index],{height:50})
+                    };
+                    aLi[i].onmouseout = function(){
+                       move(aSpan[this.index],{height:0});
+                    }
+                }
+            })();
+            //js作品
+            ;(function(){
+                function hoverDir(obj, ev){
+                    var x=obj.offsetLeft+obj.offsetWidth/2-ev.clientX;
+                    var y=obj.offsetTop+obj.offsetHeight/2-ev.clientY;
+
+                    return Math.round((Math.atan2(y, x)*180/Math.PI+180)/90)%4;
+                }
+                var oJsinfo = document.getElementById('js_info');
+                var aLi = oJsinfo.children;
+                for(var i = 0;i<aLi.length;i++){
+                    aLi[i].onmouseenter = function(ev){
+                        var oEvent = ev || event;
+                        var n = hoverDir(this,oEvent);
+                        var oSpan = this.children[0].children[1];
+                        switch(n){
+                            case 0:
+                                oSpan.style.left = '200px';
+                                oSpan.style.top = 0;
+                                break;
+                            case 1:
+                                oSpan.style.left = 0;
+                                oSpan.style.top = '200px';
+                                break;
+                            case 2:
+                                oSpan.style.left = '-200px';
+                                oSpan.style.top = 0;
+                                break;
+                            case 3:
+                                oSpan.style.left = 0;
+                                oSpan.style.top = '-200px';
+                        }
+                        move(oSpan, {left: 0, top: 0},{easing:'linear'});
+                    };
+                    aLi[i].onmouseleave=function(ev){
+                        var oEvent=ev || event;
+                        var n=hoverDir(this, oEvent);
+
+                        var oSpan=this.children[0].children[1];
+                        switch(n){
+                            case 0:
+                                move(oSpan, {left: 200, top: 0},{easing:'linear'});
+                                break;
+                            case 1:
+                                move(oSpan, {left: 0, top: 200},{easing:'linear'});
+                                break;
+                            case 2:
+                                move(oSpan, {left: -200, top: 0},{easing:'linear'});
+                                break;
+                            case 3:
+                                move(oSpan, {left: 0, top: -200},{easing:'linear'});
+                                break;
+                        }
+                    };
+                }
+            })();
+            //css3/h5效果
+            ;(function(){
+                var oCss3info = document.getElementById('css3_info');
+                var aLi = oCss3info.children;
+                var aSpan = oCss3info.getElementsByTagName('span');
+                for(var i = 0;i<aLi.length;i++){
+                    aLi[i].index = i;
+                    aLi[i].onmouseover = function(){
+                        for(var i=0;i<aLi.length;i++){
+                            move(aSpan[i],{height:0});
+                        }
+                        move(aSpan[this.index],{height:50})
+                    };
+                    aLi[i].onmouseout = function(){
+                        move(aSpan[this.index],{height:0});
+                    }
+                }
+            })();
+        });
+    </script>
+</head>
+<body>
+    <div class="enter_wp" id="enter_wp">
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <div class="enter_txt" id="enter_txt">
+            <!--<span>Enter HomePage</span>-->
+        </div>
+    </div>
+    <!--进入首页部分-->
+    <div class="wp" id="wp">
+        <div class="header_wp">
+            <div class="title_bar clearfix">
+                <div class="title_left fl">
+                        <img src="img/name.gif"/>
+                </div>
+                <div class="clock_img fl">
+                    <div class="year" id="year">
+                        <img class="num" src="img2/0.png" alt="0" />
+                        <img class="num" src="img2/0.png" alt="0" />
+                        <img class="num" src="img2/0.png" alt="0" />
+                        <img class="num" src="img2/0.png" alt="0" />
+                        <img src="img2/year.png" alt="year" />
+                        <img class="num" src="img2/0.png" alt="0" />
+                        <img class="num" src="img2/0.png" alt="0" />
+                        <img src="img2/month.png" alt="month" />
+                        <img class="num" src="img2/0.png" alt="0" />
+                        <img class="num" src="img2/0.png" alt="0" />
+                        <img src="img2/seven.png" alt="seven" />
+                    </div>
+                    <div class="time" id="time">
+                        <img class="num" src="img2/0.png" alt="0" />
+                        <img class="num" src="img2/0.png" alt="0" />
+                        <img src="img2/sign.png" alt="sign" />
+                        <img class="num" src="img2/0.png" alt="0" />
+                        <img class="num" src="img2/0.png" alt="0" />
+                        <img src="img2/sign.png" alt="sign" />
+                        <img class="num" src="img2/0.png" alt="0" />
+                        <img class="num" src="img2/0.png" alt="0" />
+                        <img class="pos2" src="img2/week.png" alt="week" />
+                        <img class="num2" src="img2/one.png" alt="one" />
+                    </div>
+                </div>
+                <div class="title_right fr" id="title_right">
+                        <img src="img/txt.jpg"/>
+                </div>
+            </div>
+        </div>
+        <!--头部结束-->
+        <div class="content_wp">
+                <div class="content">
+                    <div class="banner">
+                        <ul class="banner_list clearfix" id="banner_list">
+                            <li>
+                                <a href="javascript:;">Home</a>
+                                <i class="active"></i>
+                            </li>
+                            <li>
+                                <a href="javascript:;">Skills</a>
+                                <i></i>
+                            </li>
+                            <li>
+                                <a href="javascript:;">HTML/CSS</a>
+                                <i></i>
+                            </li>
+                            <li>
+                                <a href="javascript:;">JS</a>
+                                <i></i>
+                            </li>
+                            <li>
+                                <a href="javascript:;">HTML5/CSS3</a>
+                                <i></i>
+                            </li>
+                            <li class="bar_last">
+                                <a href="javascript:;">About Me</a>
+                                <i></i>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="contains" id="contains">
+                        <div class="contains_con active " alt="bgimg">
+                            <p>WEB前端工程师--wuyao</p>
+                        </div>
+                        <div class="contains_con" alt="skill">
+                            <div class="skills">
+                                <div class="container"></div>
+                                <div class="bar mint active" data-percent="90" data-skill="JavaScript"></div>
+                                <div class="bar ajax active" data-percent="85" data-skill="Ajax"></div>
+                                <div class="bar lila active" data-percent="80" data-skill="jQuery"></div>
+                                <div class="bar red active" data-percent="75" data-skill="HTML+CSS"></div>
+                                <div class="bar orange active" data-percent="65" data-skill="Bootstrap"></div>
+                                <div class="bar gray active" data-percent="65" data-skill="Less"></div>
+                            </div>
+                        </div>
+                        <div class="contains_con">
+                            <ul class="css_info" id="css_info">
+                                <li>
+                                    <a href="css-info/mlsxm/mls.html" target="_blank">
+                                        <img src="img/mls.jpg"/>
+                                    </a>
+                                    <span>美丽说页面</span>
+                                </li>
+                                <li>
+                                    <a href="css-info/mlsxm/xm.html" target="_blank">
+                                        <img src="img/mi.jpg"/>
+                                    </a>
+                                    <span>小米官网页面</span>
+                                </li>
+                                <li>
+                                    <a href="css-info/bdl/bdl.html" target="_blank">
+                                        <img src="img/baideli.jpg"/>
+                                    </a>
+                                    <span>百得利汽车页面</span>
+                                </li>
+                                <li>
+                                    <a href="css-info/jd/jd.html" target="_blank">
+                                        <img src="img/jd.jpg"/>
+                                    </a>
+                                    <span>京东官网页面</span>
+                                </li>
+                                <li>
+                                    <a href="css-info/llhx/llhx.html" target="_blank">
+                                        <img src="img/llhx.jpg"/>
+                                    </a>
+                                    <span>灵魂回响官网页面</span>
+                                </li>
+                                <li>
+                                    <a href="css-info/aqy/aqy.html" target="_blank">
+                                        <img src="img/aqy.jpg"/>
+                                    </a>
+                                    <span>爱奇艺页面</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="contains_con">
+                            <ul class="js_info" id="js_info">
+                                <li>
+                                    <a href="js-info/Drag/drag.html" target="_blank">
+                                        <img src="img/1web.png"/>
+                                        <span>拖拽运动</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="js-info/MoveOne/moveone.html" target="_blank">
+                                        <img src="img/2motion.png"/>
+                                        <span>MoveOne</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="js-info/AjaxJsonp/ajaxjsonp.html" target="_blank">
+                                        <img src="img/3illustration.png"/>
+                                        <span>Ajax/Jsonp</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="js-info/MoveTwo/movetwo.html" target="_blank">
+                                        <img src="img/4graphic.png"/>
+                                        <span>MoveTwo</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="js-info/MoveThree/movethree.html" target="_blank">
+                                        <img src="img/5develo.png"/>
+                                        <span>MoveThree</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="js-info/MoveFour/movefour.html" target="_blank">
+                                        <img src="img/6branding.png"/>
+                                        <span>MoveFour</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="contains_con">
+                            <ul class="css_info" id="css3_info">
+                                <li>
+                                    <a href="h5-info/circle/circle.html" target="_blank">
+                                        <img src="img/circle.png"/>
+                                    </a>
+                                    <span>3D圆环</span>
+                                </li>
+                                <li>
+                                    <a href="h5-info/clock/clock.html" target="_blank">
+                                        <img src="img/showclock.png"/>
+                                    </a>
+                                    <span>模拟时钟</span>
+                                </li>
+                                <li>
+                                    <a href="h5-info/slide/slide.html" target="_blank">
+                                        <img src="img/slide.png"/>
+                                    </a>
+                                    <span>图片切换效果</span>
+                                </li>
+                                <li>
+                                    <a href="h5-info/special/special.html" target="_blank">
+                                        <img src="img/special.png"/>
+                                    </a>
+                                    <span>图片特效</span>
+                                </li>
+                                <li>
+                                    <a href="h5-info/cube/cube.html" target="_blank">
+                                        <img src="img/cube.png"/>
+                                    </a>
+                                    <span>立方体旋转</span>
+                                </li>
+                                <li>
+                                    <a href="h5-info/turn/turn.html" target="_blank">
+                                        <img src="img/turn.png"/>
+                                    </a>
+                                    <span>3D翻转</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="contains_con clearfix">
+                            <div class="mypic fl">
+                                <img src="img/mine.jpg" alt=""/>
+                            </div>
+                            <div class="describe fl">
+                                <div class="hello">
+                                    HELLO
+                                </div>
+                                <h1 class="myname">
+                                    <span>I'm</span>
+                                    吴耀
+                                </h1>
+                                <h2 class="job">Web前端开发工程师</h2>
+                                <dl class="profile clearfix">
+                                    <dt>年龄</dt>
+                                    <dd>25</dd>
+                                    <dt>地址</dt>
+                                    <dd>北京昌平平西府小辛庄村</dd>
+                                    <dt>E-mail</dt>
+                                    <dd><a href="328948166@qq.com">328948166@qq.com</a></dd>
+                                    <dt>Tel</dt>
+                                    <dd><a href="tel:+12562548456">18062549265</a></dd>
+                                    <dt>工作年限</dt>
+                                    <dd>3年</dd>
+                                    <dt class="profile-vacation"><span>到岗时间</span></dt>
+                                    <dd>可随时到岗</dd>
+                                </dl>
+                            </div>
+                            <div class="social_bar">
+                                <ul class="social clearfix">
+                                    <li>
+                                        <a target="_blank" href="http://www.map.baidu.com">
+                                            <i class="iconfont">&#xe600;</i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a target="_blank" href="http://sighttp.qq.com/msgrd?v=1&uin=328948166">
+                                            <i class="iconfont">&#xe601;</i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a target="_blank" href="javascript:;" title="18600364243">
+                                            <i class="iconfont">&#xe602;</i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a target="_blank" href="http://login.sina.com.cn/signin/roaming">
+                                            <i class="iconfont">&#xe603;</i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a target="_blank" href="javascript:;">
+                                            <i class="iconfont">&#xe604;</i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div class="footer_wp">
+            <div class="weixin">
+                <img src="img/WeiXin.png"/>
+                <span>扫我</span>
+            </div>
+            <div class="contact">
+                <p>PLEASE CONTACT ME</p>
+                <p>TEL: 18062549265</p>
+                <p>QQ: 328948166</p>
+                <p>Email:328948166@qq.com</p>
+            </div>
+            <div class="qq">
+                <img src="img/QQ.png"/>
+                <span>扫我</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

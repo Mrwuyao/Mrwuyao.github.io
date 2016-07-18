@@ -1,0 +1,75 @@
+body{
+    background: #bbffe1;
+}
+.bar_box{
+    position:relative;
+    width: 400px;
+    height: 30px;
+    margin:50px auto;
+    background: #999999;
+}
+.bar_box #bar{
+    width: 0;
+    height: 100%;
+    background: #3bb4f2;
+}
+.bar_box span{
+    position: absolute;
+    left: 50%;
+    top: 6px;
+    color: #fff;
+}
+.container{
+    position:relative;
+    width: 100%;
+}
+.preload{
+    position:absolute;
+    top:0;
+    left:50%;
+    width: 700px;
+    margin-left:-350px;
+}
+.pagetitle{
+    width: 600px;
+    height: 60px;
+    margin:0 auto 20px;
+    line-height:60px;
+    padding-left:10px;
+    font-size:2.8rem;
+    font-weight:900;
+    font-family: Lato, "Microsoft YaHei", sans-serif;
+    color: #666;
+    text-shadow:1px 1px #EFEFEF,2px 2px #AEE2D9;
+    border-bottom-style:double;
+    border-bottom-color: #8c65ff;
+    box-sizing:border-box;
+}
+.preload li{
+    width: 300px;
+    height: 300px;
+    float: left;
+    margin-left: 20px;
+    border: 1px solid #000;
+}
+.preload li img{
+    width: 100%;
+}
+.falls1{
+    position:absolute;
+    top:0;
+    left:20px;
+    width: 200px;
+    border: 1px solid #000;
+}
+.falls2{
+    position:absolute;
+    top:0;
+    right:20px;
+    width: 200px;
+    border: 1px solid #000;
+}
+.falls1 li,.falls2 li{
+    width: 180px;
+    margin: 10px;
+}

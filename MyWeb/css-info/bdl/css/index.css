@@ -1,0 +1,367 @@
+ *{margin:0 auto;}
+.top{height:123px;
+     background:url(../img/top.png) no-repeat;
+}
+.top-logo{width:1000px;
+           height:123px;
+}
+.logo1{width:185px;
+       height:44px;
+	   margin-top:42px;
+	   background:url(../img/logo.png) no-repeat;
+}
+
+.logo2{
+       height:35px;
+	   margin-top:42px;
+}
+.denglu{margin-top:12px;
+        font-size:14px;
+		line-height:18px;
+		color:#fff;
+		font-family:'微软雅黑';
+		border-bottom:2px solid #ccc;
+		
+}
+.shu{margin-left:12px;
+     margin-top:14px;
+     font-weight:bold;
+	 color:#FFF;
+}
+.zhuce{margin:12px 12px 0 12px;
+       font-size:14px;
+		line-height:18px;
+		color:#fff;
+		font-family:'微软雅黑';
+}
+.vip{margin-top:12px;
+     line-height:18px;
+	 font-size:14px;
+	 color:#fff;
+	 font-family:'微软雅黑';
+}
+.weibo{width:23px;
+       height:21px;
+	   margin-top:12px;
+	   margin-left:17px;
+	   background:url(../img/weibo.png) no-repeat;
+}
+.weixin{width:21px;
+       height:18px;
+	   margin-top:13px;
+	   margin-left:14px;
+	   background:url(../img/weixin.png) no-repeat;
+}
+.buycar{width:177px;
+        height:35px;
+		margin-left:13px;
+		background:url(../img/buycar.png) no-repeat;
+}
+.denglu:hover,.zhuce:hover,.vip:hover{color:#f00;}
+ /*TOP 结束*/
+ .content{margin-bottom:30px;
+          background:#404141;
+		  
+ }
+ .nav{width:1000px;
+      height:40px;
+	  margin:0 auto;
+ }
+ .nav>li{float:left;
+         height:40px;
+ }
+ .nav-a{display:block;
+         padding:14px 22px;
+		 height:12px;
+		 line-height:12px;
+		 font-family:'微软雅黑';
+	     color:#fff;
+ }
+ .nav1{display:block;       
+         width:160px;
+         padding:14px 22px;
+		 height:12px;
+		 line-height:12px;
+		 font-family:'微软雅黑';
+	     color:#fff;
+	    }
+ .nav1 i{
+         width:12px;
+          height:9px;
+		  margin-right:12px;
+		  background:url(../img/icon_1.png) no-repeat;
+ }
+ .nav li:hover .nav-a{background:#4b4b4b;}
+ .nav-l1:hover .nav1{background:#343434;}
+ .nav-l1,.nav-l3{ position:relative;}
+ .con-1{position:absolute;
+        left:0;
+		top:40px;
+	    width:176px;
+        height:512px;
+		padding:0 12px;
+		background:#fff;
+		display:none;
+ }
+ .product dt,.product dd{float:left;}
+ .product{padding-bottom:6px;
+          border-bottom:1px solid #CCC;
+ }
+ .pro-1{width:176px;
+        margin-top:16px;
+		margin-bottom:14px;
+		  height:14px;
+		  line-height:14px;
+	      font-size:14px;
+		  font-weight:bold;
+          color:#323232;
+ }
+ .product dd{padding-right:24px;
+             margin-bottom:10px;
+ }
+ .product .pro-4{padding-right:0;}
+ .product a:hover{color:#f00; text-decoration:underline;}
+ .more{display:block;
+	   margin-top:16px;
+       line-height:14px;
+	   font-size:14px;
+	   font-weight:bold;
+ }
+ .more:hover{color:#f00; text-decoration:underline;}
+ .nav-l1:hover .con-1{display:block;}
+ .con-2{position:absolute;
+        top:40px;
+		left:0;
+		width:80px;
+	    padding:0 6px;
+		background:#fff;
+		display:none;
+	}
+ .con-2 li{padding:14px 16px;
+           border-bottom:1px dashed #ccc;
+		   width:48px;
+ }
+ .con-2 a:hover{color:#f00; text-decoration:underline;}
+ .nav-l3:hover .con-2{display:block;}
+ /*content结束*/
+ .wp{width:1000px;
+	  margin:0 auto;
+ }
+  .brand{
+	 	width:1000px;
+	 }
+ .br-h{
+	  padding-left:10px;
+	  margin-bottom:20px;
+	  font-size:16px;
+	  line-height:16px;
+	  font-weight:bold;
+	  font-family:'微软雅黑';
+	 }
+	 .br-u{
+		    width:998px;
+		 	height:80px;
+			border:1px solid #ccc;
+		 }
+	  .br-u li{
+		   float:left;
+		   height:80px;
+		  }
+    .br-u-a1{
+		   display:block;
+		   height:62px;
+		   padding-top:18px;
+		   line-height:80px;
+		   width:143px;
+		   text-align:center;
+		   border-right:1px solid #ccc;
+		  }
+    .br-u-a2{
+		   display:block;
+		   height:62px;
+		   padding-top:18px;
+		   line-height:80px;
+		   width:143px;
+		   text-align:center;
+		  }
+	.br-u-a3{
+		   display:block;
+		   position:relative;
+		   height:70px;
+		   padding-top:10px;
+		   line-height:80px;
+		   width:142px;
+		   text-align:center;
+		   border:1px solid #065eab;
+		  }
+		  .br-u-a3 i{
+			  	position:absolute;
+				bottom:-7px;
+				left:66px;
+				width:15px;
+				height:7px;
+				background:url(../img/icon-13.png);
+			  }
+	 .br-u-a4{
+		   display:block;
+		   height:64px;
+		   padding-top:16px;
+		   line-height:80px;
+		   width:141px;
+		   text-align:center;
+		   border-right:1px solid #ccc;
+		  }
+	 .br-u-a5{
+		   display:block;
+		   height:64px;
+		   padding-top:16px;
+		   line-height:80px;
+		   width:141px;
+		   text-align:center;
+		   border-right:1px solid #ccc;
+		  }
+	 .br-u-a6{
+		   display:block;
+		   height:54px;
+		   padding-top:26px;
+		   line-height:80px;
+		   width:141px;
+		   text-align:center;
+		   border-right:1px solid #ccc;
+		  }
+	 .br-u-a7{
+		   display:block;
+		   height:55px;
+		   padding-top:25px;
+		   line-height:80px;
+		   width:141px;
+		   text-align:center;
+		  }
+	.car{
+		 width:998px;
+		 height:266px;
+		 margin-bottom:20px;
+		 border:1px solid #ccc;
+		 border-top:0;
+		 font-family:'微软雅黑';
+		}
+     .car li{
+		   float:left;
+		   box-sizing:border-box;
+		   height:266px;
+		   padding:0 18px 0 20px;
+		   background-size:25%;
+		 }
+	  .car1-pic{
+		    display:block;
+			margin:22px auto 12px auto;
+		  }
+	 .car1-p{
+		   margin:16px 0 6px 0;
+		 }
+	  .car1-sp1{
+		  	color:#999;
+			text-decoration:line-through;
+		  }
+	  .car1-sp2{
+		    color:#e01e27;
+			font-weight:bold;
+		  }
+		  /*新车品牌专区结束*/
+  .shop{
+		   width:1000px;
+		   margin-bottom:12px;
+		  }
+	  .shop-h{
+		    width:964px;
+			height:34px;
+			padding:0 18px;
+			margin-bottom:14px;
+			border-bottom:3px solid #1f436a;
+		  }
+	   .shop-s{
+		   	 font-size:18px;
+			 line-height:18px;
+			 font-family:'微软雅黑';
+			 font-weight:bold;
+		   }
+	    .shop-a{
+			margin-top:14px;
+			 color:#999;
+			}
+		.shop-a:hover{
+			 	color:#f00;
+				text-decoration:underline;
+			}
+		.shop-u li{
+			  float:left;
+			  width:242px;
+			  height:384px;
+			  padding:16px 0;
+			  margin-right:8px;
+			  border:1px solid #ccc;
+			}
+		.shop-u .shop-u-last{
+			  margin-right:0;
+			}
+		.shop-u-a{
+			  display:block;
+			  width:212px;
+			  height:203px;
+			  margin:0 auto;
+			  margin-bottom:16px;
+			}
+		.shop-u-p1{
+			    width:212px;
+				padding-bottom:8px;
+				margin-left:16px;
+				margin-bottom:6px;
+				border-bottom:2px solid #999;
+			}
+		.shop-u-p2{
+			    line-height:24px;
+				margin-left:16px;
+				margin-bottom:10px;
+			}
+		.shop-u-p3{
+			    height:28px;
+				padding-left:16px;
+			}
+		.shop-u-p3 span{
+			    float:left;
+				height:28px;
+				line-height:28px;
+				font-size:14px;
+				font-family:'微软雅黑';
+				color:#f39761;
+			}
+		.shop-u-pa{
+			    float:right;
+				position:relative;
+				height:28px;
+				line-height:28px;
+				width:82px;
+				padding-left:8px;
+				margin-right:10px;
+				border-radius:5px;
+				background:#f28e51;				
+				font-size:14px;
+				font-family:'微软雅黑';
+				color:#fff;
+			}
+		.shop-u-pa i{
+				position:absolute;
+				top:6px;
+				right:5px;
+				width:14px;
+				height:16px;
+				background:url(../img/icon-15.png);
+			}
+		.ad{margin-bottom:20px;}
+		.ad a{
+			 display:block;
+			 width:1000px;
+			 height:97px;
+			}
+		 /*精品商城结束*/
+   

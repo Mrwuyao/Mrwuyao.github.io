@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="base.css"/>
+    <link rel="stylesheet" href="index.css"/>
+    <script>
+        function getPos(obj){
+            var l =0;
+            var t =0;
+            while(obj){
+                l+=obj.offsetLeft;
+                t+=obj.offsetTop;
+                obj = obj.offsetParent;
+            }
+            return {left:l,top:t}
+        }
+        function rnd(n, m){
+            return parseInt(Math.random()*(m-n))+n;
+        }
+        window.onresize = window.onscroll = window.onload = function(){
+            ;(function(){
+                var oBarbox = document.getElementById('bar_box');
+                var oBar = document.getElementById('bar');
+                var oSpan = oBarbox.getElementsByTagName('span')[0];
+                var count = 0;
+                var n = 77;
+                for(var i=0;i<n;i++){
+                    var oImag = new Image();
+                    oImag.src='http://www.zhinengshe.com/works/3525/img/'+i+'.jpg';
+                    oImag.onload = function(){
+                        count++;
+                        var scale = count/n;
+                        oBar.style.width = oBarbox.offsetWidth*scale+'px';
+                        oSpan.innerHTML = (scale*100).toFixed(2)+'%';
+                    }
+                }
+            })();
+            ;(function(){
+                var oUl = document.getElementById('ul1');
+                var aImg = oUl.getElementsByTagName('img');
+                var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                var clientH = document.documentElement.clientHeight;
+                var scrollBottom = scrollTop+clientH;
+                for(var i =0 ;i<aImg.length;i++){
+                    var oTop = getPos(aImg[i]).top;
+                    if(scrollBottom>=oTop){
+                        aImg[i].src = aImg[i].getAttribute('_src');
+                    }
+                }
+            })();
+            ;(function(){
+                function createLi(){
+                    var oLi = document.createElement('li');
+                    oLi.style.height = rnd(100,300)+'px';
+                    oLi.style.background = 'rgb('+rnd(0,256)+','+rnd(0,256)+','+rnd(0,256)+')';
+                    return oLi;
+                }
+                var aUl = document.getElementsByTagName('ul');
+                function create20(){
+                    for(var i=0;i<20;i++){
+                        var oLi = createLi();
+                        var arrUl = [];
+                        for(var j=0;j<aUl.length;j++){
+                            arrUl.push(aUl[j]);
+                        }
+                        arrUl.sort(function(n1,n2){
+                            return n1.offsetHeight-n2.offsetHeight;
+                        });
+                        arrUl[0].appendChild(oLi);
+                    }
+                }
+                create20();
+            })();
+        }
+    </script>
+</head>
+<body>
+<div class="bar_box" id="bar_box">
+    <div id="bar"></div>
+    <span>0%</span>
+</div>
+<div class="container">
+    <ul class="falls1"></ul>
+    <ul class="preload" id="ul1">
+        <h2 class="pagetitle">图片预加载&瀑布流</h2>
+        <li><img _src="img/b1.jpg"></li>
+        <li><img _src="img/b2.jpg"></li>
+        <li><img _src="img/b3.jpg"></li>
+        <li><img _src="img/b4.jpg"></li>
+        <li><img _src="img/b5.jpg"></li>
+        <li><img _src="img/b6.jpg"></li>
+        <li><img _src="img/b7.jpg"></li>
+        <li><img _src="img/b8.jpg"></li>
+    </ul>
+    <ul class="falls2"></ul>
+</div>
+</body>
+</html>

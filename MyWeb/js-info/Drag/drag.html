@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="base.css"/>
+    <link rel="stylesheet" href="index.css"/>
+    <script src="../../js/common.js"></script>
+    <script>
+        function getPos(obj){
+            var l=0;
+            var t=0;
+
+            while(obj){
+                l+=obj.offsetLeft;
+                t+=obj.offsetTop;
+
+                obj=obj.offsetParent;
+            }
+            return {left: l, top: t};
+        }
+        domReady(function(){
+            //放大镜
+            ;(function(){
+                var oSmall=document.getElementById('small');
+                var oSpan=oSmall.children[0];
+                var oBig=document.getElementById('big');
+                var oImg=oBig.children[0];
+
+                // 移入
+                oSmall.onmouseover=function(){
+                    oSpan.style.display='block';
+                    oBig.style.display='block';
+                };
+                // 移动
+                oSmall.onmousemove=function(ev){
+                    var oEvent=ev || event;
+                    var scrollTop=document.documentElement.scrollTop || document.body.scrollTop;
+                    var scrollLeft=document.documentElement.scrollLeft || document.body.scrollLeft;
+                    var l=oEvent.clientX-getPos(oSmall).left-oSpan.offsetWidth/2+scrollLeft;
+                    var t=oEvent.clientY-getPos(oSmall).top-oSpan.offsetHeight/2+scrollTop;
+                    // 限制小黄块的范围
+                    if(l<=0){
+                        l=0;
+                    }
+                    if(t<=0){
+                        t=0;
+                    }
+                    if(l>=oSmall.offsetWidth-oSpan.offsetWidth){
+                        l=oSmall.offsetWidth-oSpan.offsetWidth;
+                    }
+                    if(t>=oSmall.offsetHeight-oSpan.offsetHeight){
+                        t=oSmall.offsetHeight-oSpan.offsetHeight;
+                    }
+                    oSpan.style.left=l+'px';
+                    oSpan.style.top=t+'px';
+
+                    var l2=-l/(oSmall.offsetWidth-oSpan.offsetWidth)*(oImg.offsetWidth-oBig.offsetWidth);
+                    var t2=-t/(oSmall.offsetHeight-oSpan.offsetHeight)*(oImg.offsetHeight-oBig.offsetHeight);
+                    oImg.style.left=l2+'px';
+                    oImg.style.top=t2+'px';
+                };
+                // 移出
+                oSmall.onmouseout=function(){
+                    oSpan.style.display='none';
+                    oBig.style.display='none';
+                };
+            })();
+            //拖拽运动
+            var oDiv = document.getElementById('dragout');
+            var oParent = oDiv.parentNode;
+            var iSpeedX=0;
+            var iSpeedY=0;
+            var lastX=0;
+            var lastY=0;
+            oDiv.onmousedown=function(ev){
+                clearInterval(timer);
+                var oEvent=ev || event;
+                var disX=oEvent.clientX-oDiv.offsetLeft;
+                var disY=oEvent.clientY-oDiv.offsetTop;
+
+                document.onmousemove=function(ev){
+                    var oEvent=ev || event;
+                    oDiv.style.left=oEvent.clientX-disX+'px';
+                    oDiv.style.top=oEvent.clientY-disY+'px';
+
+                    // 当前坐标
+                    // 上一次坐标
+                    iSpeedX=oEvent.clientX-lastX;
+                    iSpeedY=oEvent.clientY-lastY;
+                    // 更新上一次坐标
+                    lastX=oEvent.clientX;
+                    lastY=oEvent.clientY;
+                };
+                document.onmouseup=function(){
+                    document.onmousemove=null;
+                    document.onmouseup=null;
+                    collision();
+                };
+                return false;
+            };
+
+            var timer;
+            function collision(){
+                clearInterval(timer);
+                timer=setInterval(function(){
+                    iSpeedY+=3;
+                    var l=oDiv.offsetLeft+iSpeedX;
+                    var t=oDiv.offsetTop+iSpeedY;
+
+                    if(t>=oParent.offsetHeight-oDiv.offsetHeight){
+                        t=oParent.offsetHeight-oDiv.offsetHeight;
+                        iSpeedY*=-0.8;
+                        iSpeedX*=0.8;
+                    }
+                    if(l>oParent.offsetWidth-oDiv.offsetWidth){
+                        l=oParent.offsetWidth-oDiv.offsetWidth;
+                        iSpeedX*=-0.8;
+                        iSpeedY*=0.8;
+                    }
+                    if(t<0){
+                        t=0;
+                        iSpeedY*=-0.8;
+                        iSpeedX*=0.8;
+                    }
+                    if(l<0){
+                        l=0;
+                        iSpeedX*=-0.8;
+                        iSpeedY*=0.8;
+                    }
+
+                    oDiv.style.left=l+'px';
+                    oDiv.style.top=t+'px';
+
+                    // 速度小于1
+                    if(Math.abs(iSpeedX)<1){
+                        iSpeedX=0;
+                    }
+                    if(Math.abs(iSpeedY)<1){
+                        iSpeedY=0;
+                    }
+                    if(iSpeedX==0 && iSpeedY==0 && t==oParent.offsetHeight-oDiv.offsetHeight){
+                        clearInterval(timer);
+                    }
+                }, 30);
+            }
+        })
+
+    </script>
+</head>
+<body>
+<div class="wp">
+    <div class="header">
+        <div class="hd_top"></div>
+        <div class="icon">Drag</div>
+        <div class="hd_btm"></div>
+    </div>
+    <div class="content">
+        <div class="rotleft"></div>
+        <div class="rotright"></div>
+        <div class="container">
+            <div class="drag_eq1 clearfix">
+                <h2 class="pagetitle">放大镜</h2>
+                <div class="glasses">
+                    <div class="small fl" id="small">
+                        <span></span>
+                        <img src="img/2.jpg">
+                    </div>
+                    <div class="big fl" id="big">
+                        <img src="img/1.jpg">
+                    </div>
+                </div>
+            </div>
+            <div class="scissor">
+                <i></i>
+            </div>
+            <div class="drag_eq2">
+                <h2 class="pagetitle">拖拽运动</h2>
+                <div class="dragout" id="dragout">
+                    把我丢出去(*^__^*)
+                </div>
+            </div>
+        </div>
+        <div class="rotleft_bottom"></div>
+        <div class="rotright_bottom"></div>
+    </div>
+    <div class="footer">
+        <div class="footerImg"></div>
+    </div>
+</div>
+</body>
+</html>

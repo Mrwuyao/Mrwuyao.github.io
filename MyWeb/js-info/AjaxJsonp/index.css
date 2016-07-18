@@ -1,0 +1,80 @@
+.wp{
+    position:relative;
+    width: 100%;
+    background:#273041;
+}
+.mountain{
+    position:absolute;
+    width: 571px;
+    height: 129px;
+    background:url(img/mountains_night_960.png) no-repeat center;
+    bottom:0;
+    left:-10px;
+    z-index:9;
+}
+.header{
+    width: 100%;
+    height: 40px;
+    padding-top:40px;
+    margin-bottom:30px;
+}
+.header h1{
+    width: 100%;
+    height: 40px;
+    line-height:40px;
+    text-align:center;
+    font-size:40px;
+    font-weight:900;
+    font-family: Lato, "Microsoft YaHei", sans-serif;
+    text-shadow:2px 2px #EFEFEF,2px 2px #AEE2D9;
+    color:#fee818;
+}
+/*The end of header*/
+.content{
+    width: 100%;
+}
+.content img{
+    border:4px solid rgba(255,255,255,.6);
+}
+.ajax_code{
+    position:relative;
+    width: 840px;
+    margin:0 auto;
+}
+.ajax_code span{
+    position:absolute;
+    width: 227px;
+    height: 227px;
+    top:-30px;
+    right:30px;
+    background:url(img/moon_960.png) no-repeat center;
+}
+.title{
+    width: 80px;
+    height: 60px;
+    line-height:60px;
+    text-align:center;
+    margin:0 auto;
+    margin-bottom:30px;
+    border-bottom-style:double;
+    border-bottom-width:8px;
+    border-bottom-color:#fee818;
+    font-size:30px;
+    font-family: Lato, "Microsoft YaHei", sans-serif;
+    color:#fee818;
+}
+.jsonp_code{
+    position:relative;
+    width: 840px;
+    margin:0 auto;
+}
+.jsonp_code span{
+    position:absolute;
+    width: 407px;
+    height: 115px;
+    bottom:0;
+    left:80px;
+    background:url(img/mayak_night_960.png) no-repeat center;
+    z-index:10;
+}
+/*The end of content*/
